@@ -1,11 +1,6 @@
 import { IBasket } from '../components/Basket';
 import { IProduct } from '../components/Product';
 
-export interface IProductList {
-    products: IProduct[];
-    setProducts(): void;
-}
-
 export interface IOrderResult {
     id: string;
     total: number;
@@ -24,6 +19,19 @@ export interface IContacts {
 }
 
 export interface IOrder extends IOrderForm, IContacts {
-    total: number;
     items: string[];
+}
+
+export interface IAppState {
+    basket: IBasket[];
+    gallery: IProduct[];
+    order: IOrder | null;
+    loading: boolean;
+}
+
+export type formErrors = Partial<Record<keyof IOrder, string>>;
+
+export interface IProductList {
+    total: number;
+    items: IProduct[];
 }

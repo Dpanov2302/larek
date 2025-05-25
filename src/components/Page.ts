@@ -1,12 +1,13 @@
-import { IProductList } from '../types';
 import { Component } from './base/Component';
 import { IEvents } from './base/events';
 import { IBasket } from './Basket';
+import { IProduct } from './Product';
 
 export interface IPage {
     counter: number;
     basket: IBasket;
-    products: IProductList;
+    products: IProduct[];
+    locked: boolean;
 }
 
 export class Page extends Component<IPage> {
@@ -36,5 +37,13 @@ export class Page extends Component<IPage> {
 
     set gallery(products: HTMLElement[]) {
         this._gallery.replaceChildren(...products);
+    }
+
+    set locked(val: boolean) {
+        if (val) {
+            this._wrapper.classList.add('page__wrapper_locked');
+        } else {
+            this._wrapper.classList.remove('page__wrapper_locked');
+        }
     }
 }
