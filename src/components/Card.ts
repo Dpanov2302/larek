@@ -6,11 +6,12 @@ interface ICardActions {
 }
 
 export interface ICard {
+    id: string;
     title: string;
     description?: string | string[];
     image: string;
     category: string;
-    price: number;
+    price: number | null;
 }
 
 export class Card extends Component<ICard> {
@@ -85,7 +86,11 @@ export class Card extends Component<ICard> {
         this.setText(this._category, val);
     }
 
-    set price(val: number) {
-        this.setText(this._price, `${val} синапсов`);
+    set price(val: number | null) {
+        if (val) {
+            this.setText(this._price, `${val} синапсов`);
+        } else {
+            this.setText(this._price, `Бесценно`);
+        }
     }
 }

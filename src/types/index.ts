@@ -1,4 +1,4 @@
-import { IBasket } from '../components/Basket';
+import { IBasketView  } from '../components/Basket';
 import { IProduct } from '../components/Product';
 
 export interface IOrderResult {
@@ -23,7 +23,7 @@ export interface IOrder extends IOrderForm, IContacts {
 }
 
 export interface IAppState {
-    basket: IBasket[];
+    basket: IBasketView [];
     gallery: IProduct[];
     order: IOrder | null;
     loading: boolean;

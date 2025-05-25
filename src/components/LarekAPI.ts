@@ -13,6 +13,7 @@ export class LarekAPI extends Api implements ILarekAPI {
 
     constructor(cdn: string, baseUrl: string, options?: RequestInit) {
         super(baseUrl, options);
+        this.cdn = cdn;
     }
 
     getProductList(): Promise<IProductList> {

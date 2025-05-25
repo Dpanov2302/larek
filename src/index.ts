@@ -1,4 +1,4 @@
-import { AppState } from './components/AppData';
+import { AppState, ProductItem } from './components/AppData';
 import { EventEmitter } from './components/base/events';
 import { Basket } from './components/Basket';
 import { Card } from './components/Card';
@@ -7,6 +7,7 @@ import { Success } from './components/common/Success';
 import { LarekAPI } from './components/LarekAPI';
 import { Order } from './components/Order';
 import { Page } from './components/Page';
+import { BasketElement, IBasketElement } from './components/BasketElement';
 import { IProduct } from './components/Product';
 import './scss/styles.scss';
 import { IOrderForm, IProductList } from './types';
@@ -43,14 +44,14 @@ events.on('items:changed', () => {
         });
         return card.render({
             title: item.title,
-            image: item.image,
+            image: api.cdn + item.image,
             description: item.description,
             category: item.category,
             price: item.price,
         });
     });
 
-    page.counter = appData.getBasketTotal();
+    // page.counter = appData.getBasketTotal();
 });
 
 events.on('order:submit', () => {
@@ -82,12 +83,9 @@ events.on('order:submit', () => {
 // 	order.errors = Object.values({phone, email}).filter(i => !!i).join('; ');
 // });
 
-events.on(
-    /^order\..*:change/,
-    (data: { field: keyof IOrderForm; value: string }) => {
-        appData.setOrderField(data.field, data.value);
-    }
-);
+events.on(/^order\..*:change/, (data: { field: keyof IOrderForm; value: string }) => {
+    appData.setOrderField(data.field, data.value);
+});
 
 // Открыть форму заказа
 events.on('order:open', () => {
@@ -115,6 +113,71 @@ events.on('modal:open', () => {
 // ... и разблокируем
 events.on('modal:close', () => {
     page.locked = false;
+});
+
+events.on('card:select', (item: ProductItem) => {
+    appData.setPreview(item);
+});
+
+events.on('preview:changed', (item: ProductItem) => {
+    const showItem = (item: ProductItem) => {
+        const product = new Card('card', cloneTemplate(cardPreviewTemplate), {
+            onClick: () => events.emit('card:add', item),
+        });
+
+        modal.render({
+            content: product.render({
+                title: item.title,
+                image: api.cdn + item.image,
+                category: item.category,
+                description: item.description,
+                price: item.price,
+            }),
+        });
+    };
+
+    if (item) {
+        api
+            .getProduct(item.id)
+            .then((result) => {
+                item.description = result.description;
+                showItem(item);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    } else {
+        modal.close();
+    }
+});
+
+events.on('card:add', (item: ProductItem) => {
+    appData.addProductInBasket({
+        index: 1,
+        title: item.title,
+        price: item.price,
+    });
+});
+
+events.on('basket:open', () => {
+    modal.render({
+        content: createElement<HTMLElement>('div', {}, [
+            basket.render({
+                products: appData.basket.reduce((array, item: IBasketElement, i) => {
+                    const cardBasket = new BasketElement(cloneTemplate(cardBasketTemplate), events);
+                    return [
+                        ...array,
+                        cardBasket.render({
+                            index: i + 1,
+                            title: item.title,
+                            price: item.price,
+                        }),
+                    ];
+                }, []),
+                totalPrice: appData.basket.reduce((total, item) => total + item.price, 0),
+            }),
+        ]),
+    });
 });
 
 api

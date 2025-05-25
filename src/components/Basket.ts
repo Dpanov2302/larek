@@ -1,18 +1,13 @@
 import { createElement } from '../utils/utils';
 import { Component } from './base/Component';
+import { ProductItem } from './AppData';
 import { EventEmitter } from './base/events';
 import { IProduct } from './Product';
 
-export interface IBasket {
-    products: Map<string, IProduct>;
-    total: number;
-    addProduct(id: string): void;
-    removeProduct(id: string): void;
-}
-
-interface IBasketView {
+export interface IBasketView {
     products: HTMLElement[];
-    total: number;
+    totalPrice: number;
+    addProduct(item: HTMLElement): void;
 }
 
 export class Basket extends Component<IBasketView> {
@@ -29,12 +24,13 @@ export class Basket extends Component<IBasketView> {
 
         if (this._submit) {
             this._submit.addEventListener('click', () => {
-                console.log('submit basket');
+                console.log('submit');
             });
         }
     }
 
     set products(products: HTMLElement[]) {
+        console.log(...products);
         if (products.length) {
             this._list.replaceChildren(...products);
         } else {
@@ -46,7 +42,7 @@ export class Basket extends Component<IBasketView> {
         }
     }
 
-    set total(total: number) {
-        this.setText(this._price, total);
+    set totalPrice(totalPrice: number) {
+        this.setText(this._price, totalPrice);
     }
 }

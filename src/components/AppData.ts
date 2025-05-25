@@ -1,6 +1,6 @@
 import { formErrors, IAppState, IOrder, IProductList } from '../types';
 import { Model } from './base/Model';
-import { IBasket } from './Basket';
+import { IBasketElement } from './BasketElement';
 import { IProduct } from './Product';
 import _ from 'lodash';
 
@@ -14,21 +14,18 @@ export class ProductItem extends Model<IProduct> {
 }
 
 export class AppState extends Model<IAppState> {
-    basket: IBasket;
+    basket: IBasketElement[] = [];
     gallery: ProductItem[];
     order: IOrder;
     loading: boolean;
     formErrors: formErrors = {};
+    preview: string | null;
 
     getTotal() {
         return this.order.items.reduce(
             (ans, item) => ans + this.gallery.find((it) => it.id === item).price,
             0
         );
-    }
-
-    getBasketTotal() {
-        return this.basket.total;
     }
 
     setGallery(products: IProductList) {
@@ -45,6 +42,11 @@ export class AppState extends Model<IAppState> {
         } else {
             this.order.items = _.without(this.order.items, id);
         }
+    }
+
+    addProductInBasket(item: IBasketElement) {
+        console.log(this.basket, item);
+        this.basket.push(item);
     }
 
     clearBasket() {
@@ -75,5 +77,10 @@ export class AppState extends Model<IAppState> {
         this.formErrors = errors;
         this.events.emit('formErrors:change', this.formErrors);
         return Object.keys(errors).length === 0;
+    }
+
+    setPreview(item: IProduct) {
+        this.preview = item.id;
+        this.emitChanges('preview:changed', item);
     }
 }

@@ -1,11 +1,11 @@
 import { Component } from './base/Component';
 import { IEvents } from './base/events';
-import { IBasket } from './Basket';
+import { IBasketView  } from './Basket';
 import { IProduct } from './Product';
 
 export interface IPage {
     counter: number;
-    basket: IBasket;
+    basket: IBasketView ;
     products: IProduct[];
     locked: boolean;
 }
@@ -26,7 +26,7 @@ export class Page extends Component<IPage> {
 
         if (this._basket) {
             this._basket.addEventListener('click', () => {
-                console.log('open basket');
+                this.events.emit('basket:open');
             });
         }
     }
