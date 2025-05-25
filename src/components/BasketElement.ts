@@ -23,7 +23,7 @@ export class BasketElement extends Component<IBasketElement> {
 
         if (this._button) {
             this._button.addEventListener('click', () => {
-                console.log('delete', this._index.textContent);
+                this.events.emit('basket:delete', { index: Number(this._index.textContent) });
             });
         }
     }

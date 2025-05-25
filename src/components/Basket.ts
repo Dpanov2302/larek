@@ -1,13 +1,10 @@
 import { createElement } from '../utils/utils';
 import { Component } from './base/Component';
-import { ProductItem } from './AppData';
 import { EventEmitter } from './base/events';
-import { IProduct } from './Product';
 
 export interface IBasketView {
     products: HTMLElement[];
     totalPrice: number;
-    addProduct(item: HTMLElement): void;
 }
 
 export class Basket extends Component<IBasketView> {

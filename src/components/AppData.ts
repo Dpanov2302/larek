@@ -30,9 +30,7 @@ export class AppState extends Model<IAppState> {
 
     setGallery(products: IProductList) {
         console.log(products);
-        this.gallery = products.items.map(
-            (product) => new ProductItem(product, this.events)
-        );
+        this.gallery = products.items.map((product) => new ProductItem(product, this.events));
         this.emitChanges('items:changed', { gallery: this.gallery });
     }
 
@@ -44,9 +42,16 @@ export class AppState extends Model<IAppState> {
         }
     }
 
-    addProductInBasket(item: IBasketElement) {
-        console.log(this.basket, item);
+    addProduct(item: IBasketElement) {
         this.basket.push(item);
+    }
+
+    deleteProduct(id: number) {
+        console.log(this.basket);
+        this.basket = this.basket.filter((item, i) => {
+            return i + 1 !== id;
+        });
+        this.events.emit('basket:open');
     }
 
     clearBasket() {
