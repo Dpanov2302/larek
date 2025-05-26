@@ -1,4 +1,5 @@
 {
+  "homepage": "https://github.com/Dpanov2302/larek",
   "name": "my-webpack-project",
   "version": "1.0.0",
   "main": "index.js",
