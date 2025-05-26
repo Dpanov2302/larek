@@ -14,10 +14,7 @@ export class Form<T> extends Component<IFormState> {
     constructor(protected container: HTMLFormElement, protected events: IEvents) {
         super(container);
 
-        this._submit = ensureElement<HTMLButtonElement>(
-            'button[type=submit]',
-            this.container
-        );
+        this._submit = ensureElement<HTMLButtonElement>('button[type=submit]', this.container);
         this._errors = ensureElement<HTMLElement>('.form__errors', this.container);
 
         this.container.addEventListener('input', (e: Event) => {
@@ -34,6 +31,7 @@ export class Form<T> extends Component<IFormState> {
     }
 
     protected onInputChange(field: keyof T, value: string) {
+        console.log(`${this.container.name}.${String(field)}`);
         this.events.emit(`${this.container.name}.${String(field)}:change`, {
             field,
             value,

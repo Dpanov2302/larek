@@ -12,6 +12,7 @@ export interface ICard {
     image: string;
     category: string;
     price: number | null;
+    disabled: boolean;
 }
 
 export class Card extends Component<ICard> {
@@ -22,18 +23,11 @@ export class Card extends Component<ICard> {
     protected _category?: HTMLElement;
     protected _price?: HTMLElement;
 
-    constructor(
-        protected blockName: string,
-        container: HTMLElement,
-        actions?: ICardActions
-    ) {
+    constructor(protected blockName: string, container: HTMLElement, actions?: ICardActions) {
         super(container);
 
         this._title = ensureElement<HTMLElement>(`.${blockName}__title`, container);
-        this._image = ensureElement<HTMLImageElement>(
-            `.${blockName}__image`,
-            container
-        );
+        this._image = ensureElement<HTMLImageElement>(`.${blockName}__image`, container);
         this._button = container.querySelector(`.${blockName}__button`);
         this._description = container.querySelector(`.${blockName}__description`);
         this._category = container.querySelector(`.${blockName}__category`);
@@ -92,5 +86,9 @@ export class Card extends Component<ICard> {
         } else {
             this.setText(this._price, `Бесценно`);
         }
+    }
+
+    set disabled(flag: boolean) {
+        this._button.disabled = flag;
     }
 }

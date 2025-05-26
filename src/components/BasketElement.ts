@@ -2,6 +2,7 @@ import { Component } from './base/Component';
 import { EventEmitter } from './base/events';
 
 export interface IBasketElement {
+    id: string;
     index: number;
     title: string;
     price: number;

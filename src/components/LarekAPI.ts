@@ -1,6 +1,5 @@
-import { IOrderResult, IProductList, IOrder } from '../types';
+import { IOrderResult, IOrder, IProductList, IProduct } from '../types';
 import { Api } from './base/api';
-import { IProduct } from './Product';
 
 export interface ILarekAPI {
     getProductList(): Promise<IProductList>;
@@ -13,6 +12,7 @@ export class LarekAPI extends Api implements ILarekAPI {
 
     constructor(cdn: string, baseUrl: string, options?: RequestInit) {
         super(baseUrl, options);
+
         this.cdn = cdn;
     }
 

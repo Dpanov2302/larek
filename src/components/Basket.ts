@@ -5,6 +5,7 @@ import { EventEmitter } from './base/events';
 export interface IBasketView {
     products: HTMLElement[];
     totalPrice: number;
+    disabled: boolean;
 }
 
 export class Basket extends Component<IBasketView> {
@@ -21,7 +22,7 @@ export class Basket extends Component<IBasketView> {
 
         if (this._submit) {
             this._submit.addEventListener('click', () => {
-                console.log('submit');
+                this.events.emit('order:open');
             });
         }
     }
@@ -41,5 +42,9 @@ export class Basket extends Component<IBasketView> {
 
     set totalPrice(totalPrice: number) {
         this.setText(this._price, totalPrice);
+    }
+
+    set disabled(flag: boolean) {
+        this._submit.disabled = flag;
     }
 }
