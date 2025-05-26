@@ -40,3 +40,6 @@ npm run build
 ```
 yarn build
 ```
+
+### Проект доступен по ссылке:
+https://dpanov2302.github.io/larek/

@@ -1,5 +1,5 @@
-@use "variables" as *;
-@use "mixins";
+@use 'variables' as *;
+@use 'mixins';
 
 .gallery {
   @include mixins.container;
@@ -9,6 +9,12 @@
     border: none;
     border-radius: $defaultBorderRadius;
     @include mixins.selectable($secondary, 2px, $primaryLight);
+    align-items: flex-start;
+
+    @media (max-width: 1335px) {
+      align-items: stretch;
+    }
+
 
     &::after {
       border-radius: 0.8rem;

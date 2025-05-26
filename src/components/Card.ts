@@ -78,6 +78,16 @@ export class Card extends Component<ICard> {
 
     set category(val: string) {
         this.setText(this._category, val);
+        const categoryMap: { [key: string]: string } = {
+            'софт-скил': 'soft',
+            'дополнительное': 'additional',
+            'другое': 'other',
+            'кнопка': 'button',
+            'хард-скил': 'hard',
+        };
+
+        const category = categoryMap[val] || '';
+        this._category.classList.add(`card__category_${category}`);
     }
 
     set price(val: number | null) {
