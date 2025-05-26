@@ -10,7 +10,7 @@ import { LarekAPI } from './components/LarekAPI';
 import { Order } from './components/Order';
 import { Page } from './components/Page';
 import './scss/styles.scss';
-import { IContacts, IOrderForm, IProduct, IProductList } from './types';
+import { IContacts, IOrderForm, IProduct, IProductList, Payment } from './types';
 import { API_URL, CDN_URL } from './utils/constants';
 import { cloneTemplate, createElement, ensureElement } from './utils/utils';
 
@@ -104,7 +104,7 @@ events.on('formContactsErrors:change', (errors: Partial<IContacts>) => {
         .join('; ');
 });
 
-events.on(/^order\..*:change/, (data: { field: keyof IOrderForm; value: string }) => {
+events.on(/^order\..*:change/, (data: { field: keyof IOrderForm; value: string & Payment }) => {
     appData.setOrderField(data.field, data.value);
 });
 
@@ -121,6 +121,7 @@ events.on('order:open', () => {
 
     modal.render({
         content: order.render({
+            payment: 'online',
             address: '',
             valid: false,
             errors: [],

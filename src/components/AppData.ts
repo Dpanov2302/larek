@@ -7,6 +7,7 @@ import {
     IOrderForm,
     IProduct,
     IProductList,
+    Payment,
 } from '../types';
 import { Model } from './base/Model';
 import { IBasketElement } from './BasketElement';
@@ -64,7 +65,7 @@ export class AppState extends Model<IAppState> {
         this.basket = [];
     }
 
-    setOrderField(field: keyof IOrderForm, value: string) {
+    setOrderField(field: keyof IOrderForm, value: string & Payment) {
         this.order[field] = value;
 
         if (this.validateOrder()) {

@@ -17,6 +17,7 @@ export interface IOrderResult {
 export type Payment = 'online' | 'offline';
 
 export interface IOrderForm {
+    payment: Payment;
     address: string;
 }
 
@@ -26,7 +27,6 @@ export interface IContacts {
 }
 
 export interface IOrder extends IOrderForm, IContacts {
-    payment: Payment;
     total: number;
     items: string[];
 }
